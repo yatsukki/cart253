@@ -20,6 +20,13 @@ let mrFurious = {
     b: 225
   }
 };
+//Shade to fill the sky
+let skyshade = {
+    r: 40,
+    g: 100,
+    b: 255
+  }
+;
 
 /**
  * Create the canvas
@@ -32,11 +39,15 @@ function setup() {
  * Draw (and update) Mr. Furious
  */
 function draw() {
-  background(160, 180, 200);
+  background(0, 40, 80);
 //making mrFurious red
   mrFurious.fill.b = mrFurious.fill.b - 1;
   mrFurious.fill.g = mrFurious.fill.g - 1;
-
+//sky goes white
+background (skyshade.r, skyshade.g, skyshade.b);
+skyshade.r = skyshade.r - 1;
+skyshade.g = skyshade.g -1;
+skyshade.b = skyshade.b -1;
 
   
   // Draw Mr. Furious as a coloured circle

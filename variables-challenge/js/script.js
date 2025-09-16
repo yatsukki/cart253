@@ -27,7 +27,16 @@ let skyshade = {
     b: 255
   }
 ;
+let bird = {
+    x:100,
+    y:100,
+    size: 50,
+//adding velocity to the bird
+    
+}
 
+
+//}
 /**
  * Create the canvas
  */
@@ -49,7 +58,11 @@ skyshade.r = skyshade.r - 1;
 skyshade.g = skyshade.g -1;
 skyshade.b = skyshade.b -1;
 
-  
+//draw da burd
+ellipse (bird.x ,bird.y, bird.size);
+//making the bird move
+    bird.x = bird.x + 1;
+    bird.y = bird.y - 2;
   // Draw Mr. Furious as a coloured circle
   push();
   noStroke();

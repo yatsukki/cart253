@@ -1,4 +1,4 @@
-# TITLE OF PROJECT
+# Variable challenge
 
 AUTHOR NAME
 

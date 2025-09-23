@@ -20,10 +20,10 @@ function setup() {
  * Drawing myself
 */
 function draw() {
-
+//drawing the base of face
 push ();
+strokeWeight(12);
+fill("#b47055ff");
 ellipse(450, 350, 250, 320);
-noStroke();
-fill("#b47055ff")
-   pop();
+pop();
 }

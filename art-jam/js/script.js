@@ -8,7 +8,7 @@
 "use strict";
 
 /**
- * OH LOOK I DIDN'T DESCRIBE SETUP!!
+ * creating my canvas  
 */
 function setup() {
     createCanvas ( 900, 700);
@@ -17,8 +17,13 @@ function setup() {
 
 
 /**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
+ * Drawing myself
 */
 function draw() {
 
+push ();
+ellipse(450, 350, 250, 320);
+noStroke();
+fill("#b47055ff")
+   pop();
 }

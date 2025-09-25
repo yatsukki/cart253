@@ -51,12 +51,51 @@ function drawStache() {
 push ();
 strokeWeight(24);
 strokeCap(SQUARE);
-line(380, 450, 450, 445);
-line(448, 445, 520, 450);
+beginShape();
+
+vertex(380, 450);
+vertex(455, 445);
+vertex(522, 450);
+
+endShape();
 pop();
 //drawing pinch
 push ();
+fill("#000000ff");
+noStroke();
+ellipse(450, 495, 110, 40);
+pop();
+}
 
+//drawing front hair
+function drawFrontHair() {
+push ();
+fill("#000000ff");
+ellipse(280, 260, 160, 160);
+ellipse(340, 180, 160, 160);
+ellipse(450, 160, 160, 160);
+ellipse(560, 180, 160, 160);
+ellipse(620, 260, 160, 160);
+
+pop();
+}
+
+drawBackHair();
+function drawBackHair() {
+push ();
+fill("#000000ff");
+ellipse(370, 400, 160, 160);
+ellipse(537, 400, 160, 160);
+pop();
+}
+
+//drawing ears
+function drawEars() {
+push ();
+strokeWeight(12);
+fill("#b47055ff");
+ellipse(300, 380, 100, 100);
+ellipse(600, 380, 100, 100);
 pop();
 }
 
@@ -65,6 +104,8 @@ pop();
  * Drawing myself
 */
 function draw() {
+drawBackHair();
+drawEars();
 //drawing the base of face
 push ();
 strokeWeight(12);
@@ -74,6 +115,7 @@ pop();
 drawStache();
 drawEyes();
 drawEyes(120, 340); //drawing duplicate eyes 100 pixels to the right
+drawFrontHair();
 push ();
 }
 

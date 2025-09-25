@@ -72,9 +72,9 @@ function drawFrontHair() {
 push ();
 fill("#000000ff");
 ellipse(280, 260, 160, 160);
-ellipse(340, 180, 160, 160);
+ellipse(360, 180, 160, 160);
 ellipse(450, 160, 160, 160);
-ellipse(560, 180, 160, 160);
+ellipse(540, 180, 160, 160);
 ellipse(620, 260, 160, 160);
 
 pop();
@@ -90,12 +90,15 @@ pop();
 }
 
 //drawing ears
-function drawEars() {
+function drawEars(moveEar) {
 push ();
+translate(moveEar, 0);
 strokeWeight(12);
 fill("#b47055ff");
 ellipse(300, 380, 100, 100);
-ellipse(600, 380, 100, 100);
+fill("#8c5949");
+noStroke();
+ellipse(300, 380, 50, 50);
 pop();
 }
 
@@ -106,6 +109,7 @@ pop();
 function draw() {
 drawBackHair();
 drawEars();
+drawEars(300); //drawing duplicate ear 300 pixels to the right
 //drawing the base of face
 push ();
 strokeWeight(12);

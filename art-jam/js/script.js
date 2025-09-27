@@ -107,6 +107,7 @@ pop();
  * Drawing myself
 */
 function draw() {
+    
 drawBackHair();
 drawEars();
 drawEars(300); //drawing duplicate ear 300 pixels to the right

@@ -20,8 +20,8 @@ let leftPupil = {
 };
 
 let mouseCursor = {
-    x: mouseX,
-    y: mouseY,
+    x: undefined,
+    y: undefined,
     size: 10,
     fill: "#ff0000"
 }
@@ -48,7 +48,7 @@ pop();
 push ();
 noStroke();
 fill("#000000ff");
-ellipse(390, 370, 63, );
+ellipse(leftPupil.x, leftPupil.y, leftPupil.size);
 pop();
 //square skin for hiding pupils
 push ();
@@ -99,9 +99,6 @@ ellipse(620, 260, 160, 160);
 pop();
 }
 
-
-
-drawBackHair();
 function drawBackHair() {
 push ();
 fill("#000000ff");
@@ -135,6 +132,7 @@ leftPupil.y = constrain(leftPupil.y, leftPupil.minY, leftPupil.maxY)
  * Drawing myself
 */
 function draw() {
+background(240);
 moveEyes();
 drawBackHair();
 drawEars();

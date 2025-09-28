@@ -26,6 +26,12 @@ let mouseCursor = {
     fill: "#ff0000"
 }
 
+let skincolor = {
+    skin: "#814e36ff", //main skintone
+    shadow: "#6d3730ff"   // shading tone
+
+}
+
 /**
  * creating my canvas  
 */
@@ -53,7 +59,7 @@ pop();
 //square skin for hiding pupils
 push ();
 noStroke();
-fill("#b47055ff")
+fill(skincolor.skin)
 square(346, 285, 88)
 pop();
 //eyebrow
@@ -112,9 +118,9 @@ function drawEars(moveEar) {
 push ();
 translate(moveEar, 0);
 strokeWeight(12);
-fill("#b47055ff");
+fill(skincolor.skin);
 ellipse(300, 380, 100, 100);
-fill("#8c5949");
+fill(skincolor.shadow);
 noStroke();
 ellipse(300, 380, 50, 50);
 pop();
@@ -140,7 +146,7 @@ drawEars(300); //drawing duplicate ear 300 pixels to the right
 //drawing the base of face
 push ();
 strokeWeight(12);
-fill("#b47055ff");
+fill(skincolor.skin);
 ellipse(450, 350, 280, 320);
 pop();
 drawStache();

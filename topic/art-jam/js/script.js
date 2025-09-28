@@ -7,6 +7,25 @@
 
 "use strict";
 
+
+let leftPupil = {
+    x: 390,
+    y: 370,
+    fill: "#000000ff",
+    maxX: 402,
+    minX: 378,
+    minY: 370,
+    maxY: 370,
+    size: 63
+};
+
+let mouseCursor = {
+    x: mouseX,
+    y: mouseY,
+    size: 10,
+    fill: "#ff0000"
+}
+
 /**
  * creating my canvas  
 */
@@ -80,6 +99,8 @@ ellipse(620, 260, 160, 160);
 pop();
 }
 
+
+
 drawBackHair();
 function drawBackHair() {
 push ();
@@ -102,12 +123,19 @@ ellipse(300, 380, 50, 50);
 pop();
 }
 
-
+//moving the pupils with mouse
+function moveEyes() {
+leftPupil.x = mouseX,
+leftPupil.y = mouseY,
+//constraining movements
+leftPupil.x = constrain(leftPupil.x, leftPupil.minX, leftPupil.maxX);
+leftPupil.y = constrain(leftPupil.y, leftPupil.minY, leftPupil.maxY)
+}
 /**
  * Drawing myself
 */
 function draw() {
-    
+moveEyes();
 drawBackHair();
 drawEars();
 drawEars(300); //drawing duplicate ear 300 pixels to the right
@@ -121,6 +149,13 @@ drawStache();
 drawEyes();
 drawEyes(120, 340); //drawing duplicate eyes 100 pixels to the right
 drawFrontHair();
-push ();
+push();
+//mouse cursor
+push();
+noStroke();
+fill(mouseCursor.fill);
+ellipse(mouseX, mouseY, mouseCursor.size);
+pop();
 }
+
 

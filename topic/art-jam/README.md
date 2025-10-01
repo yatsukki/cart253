@@ -1,4 +1,4 @@
-# TITLE OF PROJECT
+# Art jam
 
 Kerven Laurent
 

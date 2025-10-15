@@ -1,8 +1,8 @@
 /**
- * Title of Project
- * Author Name
+ * Art jam
+ * Kerven-laurent
  * 
- * very accurate recreation of a self portrait through the power of coding
+ * very accurate recreation of a self portrait through the power of coding, I think
  */
 
 "use strict";

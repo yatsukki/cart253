@@ -23,8 +23,15 @@ const creature = {
     fills: {
         bored: "#000000", // Black
         happy: "#33cc33", // Green
-        angry: "#cc3333" // Red
+        angry: "#cc3333", // Red
+        dead:  "#777777" //grey
     }
+    //is the creature alive
+    alive: true;
+    //how bored the creature is
+    boredomLevel: 0,
+    //how bored the creature get before dying
+    deathByBoredomThreshold: 500
 };
 
 /**

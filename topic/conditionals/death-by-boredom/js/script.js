@@ -49,7 +49,6 @@ function draw() {
 
     checkInput();
     drawCreature();
-}
 
 
 /**

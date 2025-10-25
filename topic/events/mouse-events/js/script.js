@@ -53,7 +53,7 @@ function mousePressed () {
 function mouseReleased () {
     ball.velocity.x = 0;
 }
-
+//resizing the ball
 function mouseWheel (event) {
     if (event.delta > 0){
          ball.size += 5;

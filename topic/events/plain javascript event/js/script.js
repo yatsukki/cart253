@@ -2,23 +2,46 @@
  * Title of Project
  * Author Name
  * 
- * HOW EMBARRASSING! I HAVE NO DESCRIPTION OF MY PROJECT!
- * PLEASE REMOVE A GRADE FROM MY WORK IF IT'S GRADED!
+ * experimenting with event handling
  */
 
 "use strict";
 
-/**
- * OH LOOK I DIDN'T DESCRIBE SETUP!!
-*/
-function setup() {
+//background color
+const bg = {
+    fill: "#000000",
+    fills: {
+        black: "#000000",
+        white: "#ffffff"
+    },
+    switchkey: 32 //spacebar
 
 }
 
 
-/**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
-*/
-function draw() {
+//creates canvas
+function setup() {
+    createCanvas (400, 400);
+    //listen for keypress
+    window.addEventListener ("keydown", changeBG);
+}
 
+
+
+function draw() {
+    //creates background
+    background (bg.fill);
+
+}
+//switches the bg from black to white
+function changeBG (event) {
+        if (event.keyCode === bg.switchkey) {
+
+        if (bg.fill === bg.fills.black) {
+            bg.fill = bg.fills.white;
+        }
+        else {
+            bg.fill = bg.fills.black
+        }
+    }   
 }

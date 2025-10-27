@@ -29,7 +29,7 @@ function showMenu () {
 //starts the game
 function startGame () {
 
-    let gameState = "game";
+    gameState = "game";
 
 }
 
@@ -97,6 +97,9 @@ function mousePressed (){
     if (gameState === "menu") {
         startGame();
         return;
+    }
+        if (gameState === "game" && frog.tongue.state === "idle") {
+    frog.tongue.state = "outbound";
     }
 }
 
@@ -216,8 +219,3 @@ function checkTongueFlyOverlap() {
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
-function mousePressed() {
-    if (frog.tongue.state === "idle") {
-        frog.tongue.state = "outbound";
-    }
-}

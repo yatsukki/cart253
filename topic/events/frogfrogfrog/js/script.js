@@ -15,6 +15,29 @@
 
 "use strict";
 
+let gameState = "menu"
+//styling the menu
+function showMenu () {
+    background("#a8ffdbff");
+    textAlign(CENTER, CENTER);
+    textSize (32);
+    text("Frogfrogfrog", width / 2, height / 2 - 40);
+    text("Click to Play", width / 2, height / 2);
+    text("Press Q to Quit", width / 2, height / 2 + 40);
+}
+
+//starts the game
+function startGame () {
+
+    let gameState = "game";
+
+}
+
+//quits the game
+function quitGame() {
+    noLoop();
+}
+
 // Our frog
 const frog = {
     // The frog's body has a position and size
@@ -43,6 +66,8 @@ const fly = {
     speed: 3
 };
 
+
+
 /**
  * Creates the canvas and initializes the fly
  */
@@ -54,6 +79,11 @@ function setup() {
 }
 
 function draw() {
+    if (gameState === "menu") {
+        showMenu();
+        return;
+    }
+
     background("#87ceeb");
     moveFly();
     drawFly();
@@ -62,6 +92,14 @@ function draw() {
     drawFrog();
     checkTongueFlyOverlap();
 }
+
+function mousePressed (){
+    if (gameState === "menu") {
+        startGame();
+        return;
+    }
+}
+
 
 /**
  * Moves the fly according to its speed
@@ -75,6 +113,9 @@ function moveFly() {
         resetFly();
     }
 }
+
+
+
 
 /**
  * Draws the fly as a black circle

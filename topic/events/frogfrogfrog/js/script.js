@@ -14,16 +14,28 @@
  */
 
 "use strict";
-
+let menuMusic;
 let gameState = "menu"
+let font1;
+
+//preloads the font and music
+function preload() {
+    font1 = loadFont('assets/fonts/CookieRunBlack.otf');
+    menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
+}
+
+
 //styling the menu
 function showMenu () {
+        
     background("#a8ffdbff");
+    fill("#000000");
+    textFont (font1);
     textAlign(CENTER, CENTER);
     textSize (32);
-    text("Frogfrogfrog", width / 2, height / 2 - 40);
+    text("Evil ass frog game", width / 2, height / 2 - 40);
+    textSize(15);
     text("Click to Play", width / 2, height / 2);
-    text("Press Q to Quit", width / 2, height / 2 + 40);
 }
 
 //starts the game
@@ -32,11 +44,13 @@ function startGame () {
     gameState = "game";
 
 }
-
-//quits the game
-function quitGame() {
-    noLoop();
+//Displays tip to player to press Q to quit at the top left of the screen
+function gameTip () {
+    textAlign(CENTER);
+    textSize(15);
+    text('PRESS Q TO QUIT', 100, 40);
 }
+
 
 // Our frog
 const frog = {
@@ -66,6 +80,11 @@ const fly = {
     speed: 3
 };
 
+//Game goes back to menu
+function keyPressed() {
+if (key === 'q' || key === 'Q') {
+    gameState = "menu";}
+}
 
 
 /**
@@ -73,17 +92,19 @@ const fly = {
  */
 function setup() {
     createCanvas(640, 480);
-
+    menuMusic.loop();
     // Give the fly its first random position
     resetFly();
 }
-
+//fires up the menu
 function draw() {
+
     if (gameState === "menu") {
         showMenu();
+
+
         return;
     }
-
     background("#87ceeb");
     moveFly();
     drawFly();
@@ -91,6 +112,7 @@ function draw() {
     moveTongue();
     drawFrog();
     checkTongueFlyOverlap();
+    gameTip();
 }
 
 function mousePressed (){

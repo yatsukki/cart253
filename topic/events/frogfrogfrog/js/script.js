@@ -57,17 +57,26 @@ function showGameOver(){
     textSize(32);
     fill("#ff0000ff");
     text("GAME OVER", width/2, height/2 - 20);
+    text("Score : "+ score, width/2, height/2 + 15)
     textSize(20);
-    text("Click to Restart", width/2, height/2 + 20);    
+    text("Click to Restart", width/2, height/2 + 60);    
     gameState = "gameover";
+
+    if (gameMusic.isPlaying()){
+        gameMusic.stop();
+       
+    }
     
 }
 
 //starts the game
 function startGame () {
+    fill("#000000");
     menuMusic.stop();
     gameMusic.loop();
+    scoreReset();
     gameState = "game";
+
 
 }
 //Displays tip to player to press Q to quit at the top left of the screen
@@ -75,7 +84,7 @@ function gameTip () {
     textAlign(CENTER);
     textSize(15);
     text('PRESS Q TO QUIT', 100, 40);
-    text('SCORE : '+ score, 100, 60)
+    text('Time record : '+ score, 100, 60)
 }
 
 
@@ -100,7 +109,14 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 4
+    speed: 25
+};
+
+const fly2 = {
+    x: 0,
+    y: 200, // Will be random
+    size: 10,
+    speed: 15
 };
 
 //Game goes back to menu
@@ -176,10 +192,15 @@ function mousePressed (){
 function moveFly() {
     // Move the fly
     fly.x += fly.speed;
+    fly2.x += fly.speed;
     // Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
     }
+    if (fly2.x > width) {
+        resetFly2();
+    }
+
 }
 
 
@@ -198,6 +219,11 @@ function drawFly() {
 function resetFly() {
     fly.x = 0;
     fly.y = random(0, 300);
+}
+
+function resetFly2() {
+    fly2.x = 0;
+    fly2.y = random(0, 300);
 }
 
 /**
@@ -234,21 +260,40 @@ function drawFrog() {
 
 }
 
+//Score increaser
+function scoreIncrease() {
+    if (gameState === "game") {
+        score++;
+    }
+}
+//Timer for score to go up every second
+setInterval(scoreIncrease, 1000);
+
+
+//score reset
+
+function scoreReset() {
+    if (gameState === "gameover" || gameState === "menu") {
+        score = 0;
+    }
+}
+
 /**
- * Handles the tongue overlapping the fly
+ * Handles the body overlapping the fly
  */
 function checkBodyFlyOverlap() {
-    // Get distance from tongue to fly
-    const d = dist(frog.body.x, frog.body.y, fly.x, fly.y);
-    // Check if it's an overlap
-    const eaten = (d < frog.body.size / 2 + fly.size / 2);
+    // Calculate the center of the fly
+    const flyCenterX = fly.x + 70 / 2; // half of the drawn width
+    const flyCenterY = fly.y + 70 / 2; // half of the drawn height
+
+    // Get distance from frog body to fly center
+    const d = dist(frog.body.x, frog.body.y, flyCenterX, flyCenterY);
+
+    // Check if circles overlap (frog’s circle vs fly’s approximate circle)
+    const eaten = (d < frog.body.size / 2 + 70 / 2);
 
     if (eaten) {
-        // Reset the fly
         gameState = "gameover";
-        // Bring back the tongue
-        //adds to the score
-        score += 100;
     }
 }
 

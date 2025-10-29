@@ -20,8 +20,9 @@ let gameoverScreen;
 let score = 0;
 let gameMusic;
 let menuMusic;
-let gameState = "menu"
+let gameState = "menu" 
 let font1;
+
 
 //preloads the font and music
 function preload() {
@@ -29,8 +30,8 @@ function preload() {
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
     gameMusic = loadSound ('assets/sounds/dummycat2.mp3');
     gameoverSound = loadSound ('assets/sounds/gameover.mp3');
-    gameoverScreen = loadImage ('assets/images/gameover.png')
-    minions = loadImage = loadImage ('assets/images/evilassminion.png')
+    gameoverScreen = loadImage ('assets/images/gameover.png');
+    minions = loadImage ('assets/images/evilassminions.jpg');
 }
 
 
@@ -44,6 +45,22 @@ function showMenu () {
     text("Evil ass frogs game", width / 2, height / 2 - 40);
     textSize(15);
     text("Click to Play", width / 2, height / 2);
+}
+
+//Game over screen
+function showGameOver(){
+    
+    image(gameoverScreen, 0, 0, 640, 480);
+    gameoverSound.play();
+    textAlign(CENTER);
+    textFont(font1);
+    textSize(32);
+    fill("#ff0000ff");
+    text("GAME OVER", width/2, height/2 - 20);
+    textSize(20);
+    text("Click to Restart", width/2, height/2 + 20);    
+    gameState = "gameover";
+    
 }
 
 //starts the game
@@ -71,14 +88,7 @@ const frog = {
         size: 40
     },
     // The frog's tongue has a position, size, speed, and state
-    tongue: {
-        x: undefined,
-        y: 480,
-        size: 20,
-        speed: 20,
-        // Determines how the tongue moves each frame
-        state: "idle" // State can be: idle, outbound, inbound
-    },
+   
 
       
    
@@ -90,7 +100,7 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 3
+    speed: 4
 };
 
 //Game goes back to menu
@@ -115,6 +125,10 @@ function setup() {
     // Give the fly its first random position
     resetFly();
 }
+
+
+let hasPlayedGameOverSound = false;
+
 //fires up the menu
 function draw() {
 
@@ -124,24 +138,34 @@ function draw() {
 
         return;
     }
+
+    else if (gameState === "gameover") {
+        showGameOver();
+        // Play the sound once
+         if (!hasPlayedGameOverSound) {
+            gameoverSound.play();
+            hasPlayedGameOverSound = true;
+        }
+        return;
+    }
+
+    
+
     background("#87ceeb");
     moveFly();
     drawFly();
     moveFrog();
-    moveTongue();
     drawFrog();
-    checkTongueFlyOverlap();
+    checkBodyFlyOverlap();
     gameTip();
 }
 
 function mousePressed (){
-    if (gameState === "menu") {
+    if (gameState === "menu" || gameState === "gameover") {
         startGame();
         return;
     }
-        if (gameState === "game" && frog.tongue.state === "idle") {
-    frog.tongue.state = "outbound";
-    }
+  
 }
 
 
@@ -162,14 +186,10 @@ function moveFly() {
 
 
 /**
- * Draws the fly as a black circle
+ * Draws the fly 
  */
 function drawFly() {
-    push();
-    noStroke();
-    fill("#000000");
-    ellipse(fly.x, fly.y, fly.size);
-    pop();
+    image (minions, fly.x, fly.y, 70, 70);
 }
 
 /**
@@ -188,54 +208,11 @@ function moveFrog() {
     frog.body.y = mouseY;
 }
 
-/**
- * Handles moving the tongue based on its state
- */
-function moveTongue() {
-    // Tongue matches the frog's x
-    frog.tongue.x = frog.body.x;
-    // If the tongue is idle, it doesn't do anything
-    if (frog.tongue.state === "idle") {
-        // Do nothing
-    }
-    // If the tongue is outbound, it moves up
-    else if (frog.tongue.state === "outbound") {
-        frog.tongue.y += -frog.tongue.speed;
-        // The tongue bounces back if it hits the top
-        if (frog.tongue.y <= 0) {
-            frog.tongue.state = "inbound";
-            //diminishes the score
-            score -= 100;
-        }
-    }
-    // If the tongue is inbound, it moves down
-    else if (frog.tongue.state === "inbound") {
-        frog.tongue.y += frog.tongue.speed;
-        // The tongue stops if it hits the bottom
-        if (frog.tongue.y >= height) {
-            frog.tongue.state = "idle";
-        }
-    }
-}
 
 /**
  * Displays the tongue (tip and line connection) and the frog (body)
  */
 function drawFrog() {
-    // Draw the tongue tip
-    push();
-    fill("#ff0000");
-    noStroke();
-    ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
-    pop();
-
-    // Draw the rest of the tongue
-    push();
-    stroke("#ff0000");
-    strokeWeight(frog.tongue.size);
-    line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
-    pop();
-
     // Draw the frog's body
     push();
     fill("#00ff00");
@@ -260,16 +237,16 @@ function drawFrog() {
 /**
  * Handles the tongue overlapping the fly
  */
-function checkTongueFlyOverlap() {
+function checkBodyFlyOverlap() {
     // Get distance from tongue to fly
-    const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
+    const d = dist(frog.body.x, frog.body.y, fly.x, fly.y);
     // Check if it's an overlap
-    const eaten = (d < frog.tongue.size/2 + fly.size/2);
+    const eaten = (d < frog.body.size / 2 + fly.size / 2);
+
     if (eaten) {
         // Reset the fly
-        resetFly();
+        gameState = "gameover";
         // Bring back the tongue
-        frog.tongue.state = "inbound";
         //adds to the score
         score += 100;
     }

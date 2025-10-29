@@ -14,6 +14,11 @@
  */
 
 "use strict";
+let minions;
+let gameoverSound;
+let gameoverScreen;
+let score = 0;
+let gameMusic;
 let menuMusic;
 let gameState = "menu"
 let font1;
@@ -22,12 +27,15 @@ let font1;
 function preload() {
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
+    gameMusic = loadSound ('assets/sounds/dummycat2.mp3');
+    gameoverSound = loadSound ('assets/sounds/gameover.mp3');
+    gameoverScreen = loadImage ('assets/images/gameover.png')
+    minions = loadImage = loadImage ('assets/images/evilassminion.png')
 }
 
 
 //styling the menu
 function showMenu () {
-        
     background("#a8ffdbff");
     fill("#000000");
     textFont (font1);
@@ -40,7 +48,8 @@ function showMenu () {
 
 //starts the game
 function startGame () {
-
+    menuMusic.stop();
+    gameMusic.loop();
     gameState = "game";
 
 }
@@ -49,6 +58,7 @@ function gameTip () {
     textAlign(CENTER);
     textSize(15);
     text('PRESS Q TO QUIT', 100, 40);
+    text('SCORE : '+ score, 100, 60)
 }
 
 
@@ -82,8 +92,15 @@ const fly = {
 
 //Game goes back to menu
 function keyPressed() {
-if (key === 'q' || key === 'Q') {
-    gameState = "menu";}
+if (key === 'q' || key === 'Q' || key === 'Escape') {
+    gameState = "menu";
+    if (!menuMusic.isPlaying()){
+        menuMusic.loop();
+    }
+    if (gameMusic.isPlaying()){
+        gameMusic.stop();
+    }
+}
 }
 
 
@@ -92,7 +109,6 @@ if (key === 'q' || key === 'Q') {
  */
 function setup() {
     createCanvas(640, 480);
-    menuMusic.loop();
     // Give the fly its first random position
     resetFly();
 }
@@ -184,6 +200,8 @@ function moveTongue() {
         // The tongue bounces back if it hits the top
         if (frog.tongue.y <= 0) {
             frog.tongue.state = "inbound";
+            //diminishes the score
+            score -= 100;
         }
     }
     // If the tongue is inbound, it moves down
@@ -235,6 +253,8 @@ function checkTongueFlyOverlap() {
         resetFly();
         // Bring back the tongue
         frog.tongue.state = "inbound";
+        //adds to the score
+        score += 100;
     }
 }
 

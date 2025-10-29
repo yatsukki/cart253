@@ -41,7 +41,7 @@ function showMenu () {
     textFont (font1);
     textAlign(CENTER, CENTER);
     textSize (32);
-    text("Evil ass frog game", width / 2, height / 2 - 40);
+    text("Evil ass frogs game", width / 2, height / 2 - 40);
     textSize(15);
     text("Click to Play", width / 2, height / 2);
 }
@@ -68,7 +68,7 @@ const frog = {
     body: {
         x: 320,
         y: 520,
-        size: 150
+        size: 40
     },
     // The frog's tongue has a position, size, speed, and state
     tongue: {
@@ -78,7 +78,10 @@ const frog = {
         speed: 20,
         // Determines how the tongue moves each frame
         state: "idle" // State can be: idle, outbound, inbound
-    }
+    },
+
+      
+   
 };
 
 // Our fly
@@ -182,6 +185,7 @@ function resetFly() {
  */
 function moveFrog() {
     frog.body.x = mouseX;
+    frog.body.y = mouseY;
 }
 
 /**
@@ -235,9 +239,22 @@ function drawFrog() {
     // Draw the frog's body
     push();
     fill("#00ff00");
-    noStroke();
+    strokeWeight(7);
     ellipse(frog.body.x, frog.body.y, frog.body.size);
     pop();
+   //drawing the eyes
+    push();
+    noStroke();
+    fill("#ffffff");
+    ellipse(frog.body.x - 10, frog.body.y - 15, 25);
+    //second eye
+    ellipse(frog.body.x + 10, frog.body.y - 15, 25);
+    //pupils
+    fill("#000000");
+    ellipse(frog.body.x + 10, frog.body.y - 20, 10);
+    ellipse(frog.body.x - 10, frog.body.y - 20, 10);
+    pop();
+
 }
 
 /**

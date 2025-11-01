@@ -51,7 +51,6 @@ function showMenu () {
 function showGameOver(){
     
     image(gameoverScreen, 0, 0, 640, 480);
-    gameoverSound.play();
     textAlign(CENTER);
     textFont(font1);
     textSize(32);
@@ -75,6 +74,7 @@ function startGame () {
     menuMusic.stop();
     gameMusic.loop();
     scoreReset();
+    hasPlayedGameOverSound = false;
     gameState = "game";
 
 
@@ -84,7 +84,7 @@ function gameTip () {
     textAlign(CENTER);
     textSize(15);
     text('PRESS Q TO QUIT', 100, 40);
-    text('Time record : '+ score, 100, 60)
+    text('Time alive : '+ score +' seconds', 100, 60)
 }
 
 
@@ -109,7 +109,7 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 25
+    speed: 17
 };
 
 const fly2 = {

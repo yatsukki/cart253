@@ -1,7 +1,6 @@
 /**
  * Frogfrogfrog
- * Pippin Barr
- * 
+ * Kerven Laurent 
  * A game of catching flies with your frog-tongue
  * 
  * Instructions:
@@ -22,7 +21,13 @@ let gameMusic;
 let menuMusic;
 let gameState = "menu" 
 let font1;
-
+let titleImage;
+let mountains;
+let clouds = [
+  { x: 100, y: 80, speed: undefined }, //cloud 1
+  { x: 300, y: 120, speed: undefined }, // cloud 2
+   { x: 500, y: 60, speed: undefined } //cloud 3
+];
 
 //preloads the font and music
 function preload() {
@@ -32,20 +37,57 @@ function preload() {
     gameoverSound = loadSound ('assets/sounds/gameover.mp3');
     gameoverScreen = loadImage ('assets/images/gameover.png');
     minions = loadImage ('assets/images/evilassminions.jpg');
+    titleImage = loadImage ('assets/images/Title.png');
+    mountains = loadImage ('assets/images/mountains.png');
 }
 
+
+//drawing the cloud
+function drawCloud(x, y) {  
+push();
+  noStroke();
+  fill(255, 255, 255, 220); 
+  ellipse(x, y, 90, 50);
+  pop();
+}
 
 //styling the menu
 function showMenu () {
-    background("#a8ffdbff");
+    background("#4dd1ff");
+    //floating cloud behind title
+    push();
+    noStroke();
+    fill("#ffffff");  
+    ellipse(470, 10 * sin(frameCount * 0.03) + 90, 40, 20);
+    pop();
+
+
+    imageMode (CENTER);
+    image(titleImage, width / 2, 7 * sin(frameCount * 0.01) + 150, 350, 200); //image title
+    imageMode (CORNERS);
+    image(mountains, 0, height / 1.7, width, height);
+    //Resets image mode
+    imageMode (CENTER);
+    //floating cloud
+    push();
+    noStroke();
+    fill("#ffffff");
+    ellipse(170, 10 * sin(frameCount * 0.02) + 185, 90, 40);
+    pop();
+
     fill("#000000");
     textFont (font1);
     textAlign(CENTER, CENTER);
-    textSize (32);
-    text("Evil ass frogs game", width / 2, height / 2 - 40);
     textSize(15);
-    text("Click to Play", width / 2, height / 2);
+    text("Click to Play", width / 2, height / 2+40);
+    imageMode(CORNER);
+    
 }
+
+function mountainScroll(){
+    
+}
+
 
 //Game over screen
 function showGameOver(){
@@ -71,6 +113,7 @@ function showGameOver(){
 //starts the game
 function startGame () {
     fill("#000000");
+    resetFly();
     menuMusic.stop();
     gameMusic.loop();
     scoreReset();
@@ -109,12 +152,13 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 17
+    speed: 17,
+    
 };
 
 const fly2 = {
     x: 0,
-    y: 200, // Will be random
+    y: 0, // Will be random
     size: 10,
     speed: 15
 };
@@ -140,6 +184,11 @@ function setup() {
     createCanvas(640, 480);
     // Give the fly its first random position
     resetFly();
+
+    for (let s of clouds){
+        s.speed = random(7, 10);
+    }
+
 }
 
 
@@ -147,7 +196,7 @@ let hasPlayedGameOverSound = false;
 
 //fires up the menu
 function draw() {
-
+    background("#4dd1ff");
     if (gameState === "menu") {
         showMenu();
 
@@ -165,9 +214,25 @@ function draw() {
         return;
     }
 
+    // passing clouds
+    for (let c of clouds){
+
+        drawCloud(c.x,c.y);
+
+        //moves the clouds
+        c.x += c.speed;
+
+        if (c.x > width + 30) {
+            c.x = -80; //starts off screen
+            c.y = random(0, width);
+            c.speed = random(7, 10)
+        }
+
+
+    }
     
 
-    background("#87ceeb");
+    
     moveFly();
     drawFly();
     moveFrog();
@@ -185,45 +250,45 @@ function mousePressed (){
 }
 
 
-/**
- * Moves the fly according to its speed
- * Resets the fly if it gets all the way to the right
- */
-function moveFly() {
-    // Move the fly
-    fly.x += fly.speed;
-    fly2.x += fly.speed;
-    // Handle the fly going off the canvas
-    if (fly.x > width) {
-        resetFly();
-    }
-    if (fly2.x > width) {
-        resetFly2();
-    }
-
-}
 
 
 
 
 /**
  * Draws the fly 
- */
+*/
 function drawFly() {
     image (minions, fly.x, fly.y, 70, 70);
 }
 
 /**
  * Resets the fly to the left with a random y
- */
+*/
 function resetFly() {
-    fly.x = 0;
-    fly.y = random(0, 300);
+    fly.x = -80;
+    fly.baseY = random(100, height - 100); // store base position
 }
 
-function resetFly2() {
-    fly2.x = 0;
-    fly2.y = random(0, 300);
+
+
+
+/**
+ * Moves the fly according to its speed
+ * Resets the fly if it gets all the way to the right
+ */
+function moveFly() {
+
+    let amplitude = 100;
+    let speed= 0.05; 
+    let verticalOffset = sin(frameCount * speed) * amplitude;
+    // Move the fly
+    fly.x += fly.speed;
+     fly.y = fly.baseY + verticalOffset;
+    // Handle the fly going off the canvas
+    if (fly.x > width) {
+        resetFly();
+    }
+   
 }
 
 /**
@@ -232,6 +297,10 @@ function resetFly2() {
 function moveFrog() {
     frog.body.x = mouseX;
     frog.body.y = mouseY;
+    //keeps the frog's body within the box so no one can cheese their way through high scores >:(
+    frog.body.x = constrain(mouseX, 25, width-25);
+    frog.body.y = constrain(mouseY, 25, height-25);
+   
 }
 
 

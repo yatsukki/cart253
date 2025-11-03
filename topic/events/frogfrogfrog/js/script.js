@@ -284,6 +284,11 @@ if (key === 'q' || key === 'Q' || key === 'Escape') {
         gameMusic.stop();
     }
 }
+
+//arrow key controls
+
+
+
 }
 
 
@@ -340,7 +345,7 @@ function draw() {
         return;
     }
 
-
+ 
     // passing clouds
     for (let c of clouds){
 

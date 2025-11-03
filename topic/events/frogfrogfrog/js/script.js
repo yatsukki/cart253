@@ -285,8 +285,10 @@ if (key === 'q' || key === 'Q' || key === 'Escape') {
     }
 }
 
-//arrow key controls
-
+//stops gameover audio immediately
+if (gameoverSound.isPlaying()) {
+    gameoverSound.stop();
+  }
 
 
 }
@@ -375,6 +377,10 @@ function draw() {
 
 function mousePressed (){
     if (gameState === "gameover") {
+        //stops stupid screaming audio if game is restarted
+        if (gameoverSound.isPlaying()) {
+        gameoverSound.stop();
+        }
         startGame();
         return;
     }
@@ -394,6 +400,10 @@ function mousePressed (){
         gameState = "menu"; 
         
     }
+
+
+
+
 }
 
 

@@ -23,6 +23,7 @@ let gameMusic;
 let menuMusic;
 let gameState = "menu" 
 let font1;
+let font2;
 let titleImage;
 let mountains;
 let clouds = [
@@ -34,6 +35,7 @@ let clouds = [
 //preloads the font and music
 function preload() {
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
+    font2 = loadFont ('assets/fonts/DarumadropOne-Regular.ttf');
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
     gameMusic = loadSound ('assets/sounds/dummycat2.mp3');
     gameoverSound = loadSound ('assets/sounds/gameover.mp3');
@@ -54,12 +56,17 @@ push();
   pop();
 }
 
+
+const sky = {
+    color: "#4dd1ff",
+}
+
 const button1 = {
     x: 245,
     y: 265,
     height: 64,
     width: 155,
-    color: "#f06a2cff", //color for debug
+    color: "rgba(255,255,255,0)", //color for debug
     x2: 245,
     y2: 350,
 
@@ -68,7 +75,7 @@ const button1 = {
 
 //styling the menu
 function showMenu () {
-    background("#4dd1ff");
+    background(sky.color);
     //floating cloud behind title
     push();
     noStroke();
@@ -79,6 +86,7 @@ function showMenu () {
 
     //button area 1
     push();
+    noStroke();
     fill(button1.color);
     rect(button1.x ,button1.y , button1.width, button1.height)
     pop();
@@ -90,6 +98,7 @@ function showMenu () {
 
     //button area 2
     push();
+    noStroke();
     fill(button1.color);
     rect(button1.x2 ,button1.y2 , button1.width, button1.height)
     pop();
@@ -104,7 +113,7 @@ function showMenu () {
     imageMode (CORNERS);
     image(mountains, 0, height / 1.7, width, height);
     //Resets image mode
-    imageMode (CENTER);
+    imageMode (CORNER);
     //floating cloud
     push();
     noStroke();
@@ -114,8 +123,43 @@ function showMenu () {
     
 }
 
-function mountainScroll(){
+function showInstructions(){
+    gameState = "instructions";
+    background(sky.color);
+    //floating cloud
+
+    push();
+    noStroke();
+    fill("#ffffff");
+    ellipse(550, 10 * sin(frameCount * 0.02) + 330, 60, 35);
+    ellipse(570, 10 * sin(frameCount * 0.02) + 310, 60, 35);
+    pop();
+    //mountain image
+    image (mountains, 400, height / 1.7, width, 200);
+    //floating cloud
+
+    push();
+    noStroke();
+    fill("#ffffff");
+    ellipse(430, 10 * sin(frameCount * 0.015) + 380, 60, 35);
+    pop();
+
+    textFont(font2);
+    textSize(43);
+    fill("#fdffee")
+    text('Instructions', 40, 60,);
+    textSize(28);
+    textWrap(WORD);
+    text('Froginton the evil frog king sent out his minions to capture you! Unfortunately your capture is inevitable...lol\n \n' +
+  'Avoid the minions as long as you can!\n \n'  +
+  'Good luck soldier!',
+  40, 140, 390);
+
     
+
+    push();
+
+    pop();
 }
 
 
@@ -154,6 +198,7 @@ function startGame () {
 }
 //Displays tip to player to press Q to quit at the top left of the screen
 function gameTip () {
+    textFont(font1);
     textAlign(CENTER);
     textSize(15);
     text('PRESS Q TO QUIT', 100, 40);
@@ -233,7 +278,7 @@ let hasPlayedGameOverSound = false;
 
 //fires up the menu
 function draw() {
-    background("#4dd1ff");
+    background(sky.color);
     if (gameState === "menu") {
         showMenu();
 
@@ -250,6 +295,13 @@ function draw() {
         }
         return;
     }
+
+    else if (gameState === "instructions"){
+        showInstructions();
+
+        return;
+    }
+
 
     // passing clouds
     for (let c of clouds){
@@ -283,10 +335,14 @@ function mousePressed (){
         startGame();
         return;
     }
+    //start game button on menu
     else if (gameState === "menu" && mouseX > button1.x && mouseX < button1.x +button1.width && mouseY > button1.y && mouseY < button1.y + button1.height) {
         startGame();
     }
-  
+    //show instructions button on menu
+    else if (gameState === "menu" && mouseX > button1.x2 && mouseX < button1.x2 +button1.width && mouseY > button1.y2 && mouseY < button1.y2 + button1.height) {
+        showInstructions();
+    }
 }
 
 

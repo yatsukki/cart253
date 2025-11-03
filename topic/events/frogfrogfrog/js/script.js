@@ -1,18 +1,19 @@
 /**
- * Frogfrogfrog
+ * Flying frogs
  * Kerven Laurent 
- * A game of catching flies with your frog-tongue
+ * A game where you need to avoid flying frogs as long as possible
  * 
  * Instructions:
  * - Move the frog with your mouse
- * - Click to launch the tongue
- * - Catch flies
+ * - Don't let the evil ass flying frogs touch you or you die, I think
  * 
  * Made with p5
  * https://p5js.org/
  */
 
 "use strict";
+let instructionMusic;
+let backbutton;
 let instructionbutton;
 let startbutton;
 let minions;
@@ -45,6 +46,8 @@ function preload() {
     mountains = loadImage ('assets/images/mountains.png');
     startbutton = loadImage ('assets/images/startgamebutton.png');
     instructionbutton = loadImage ('assets/images/instructionsbutton.png');
+    backbutton = loadImage ('assets/images/backbutton.png');
+    instructionMusic = loadSound ('assets/sounds/instructions.mp3')
 }
 
 //drawing the cloud
@@ -61,6 +64,7 @@ const sky = {
     color: "#4dd1ff",
 }
 
+
 const button1 = {
     x: 245,
     y: 265,
@@ -69,12 +73,20 @@ const button1 = {
     color: "rgba(255,255,255,0)", //color for debug
     x2: 245,
     y2: 350,
-
+    x3:430, 
+    y3:385,
 };
 
 
 //styling the menu
 function showMenu () {
+
+    //stops instruction music
+    if (instructionMusic.isPlaying()) {
+        instructionMusic.stop();
+    }
+
+
     background(sky.color);
     //floating cloud behind title
     push();
@@ -123,11 +135,13 @@ function showMenu () {
     
 }
 
+// instructions/lore I guess
+
 function showInstructions(){
-    gameState = "instructions";
+    
     background(sky.color);
     //floating cloud
-
+    textAlign(LEFT);
     push();
     noStroke();
     fill("#ffffff");
@@ -147,19 +161,36 @@ function showInstructions(){
     textFont(font2);
     textSize(43);
     fill("#fdffee")
-    text('Instructions', 40, 60,);
+    text('Instructions', 40, 65,);
     textSize(28);
     textWrap(WORD);
     text('Froginton the evil frog king sent out his minions to capture you! Unfortunately your capture is inevitable...lol\n \n' +
   'Avoid the minions as long as you can!\n \n'  +
   'Good luck soldier!',
   40, 140, 390);
+    //back button
 
-    
-
+    //debug
     push();
-
+    noStroke();
+    fill(button1.color)
+    rect(430, 385, button1.width, button1.height)
     pop();
+    //button image
+    image (backbutton, button1.x3, button1.y3, button1.width, button1.height)
+
+
+    //stops game music and start instruction music
+
+    if (gameMusic.isPlaying() || menuMusic.isPlaying()){
+        gameMusic.stop();
+        menuMusic.stop();
+               
+    }
+    else if (gameState === "instructions" && !instructionMusic.isPlaying()) {
+    instructionMusic.loop();
+}
+
 }
 
 
@@ -175,6 +206,7 @@ function showGameOver(){
     text("Score : "+ score, width/2, height/2 + 15)
     textSize(20);
     text("Click to Restart", width/2, height/2 + 60);    
+    text("Press Q to return to main menu", width/2, height/2 + 90); 
     gameState = "gameover";
 
     if (gameMusic.isPlaying()){
@@ -198,11 +230,14 @@ function startGame () {
 }
 //Displays tip to player to press Q to quit at the top left of the screen
 function gameTip () {
+    push();
+    fill("#fdffee")
     textFont(font1);
-    textAlign(CENTER);
+    textAlign(LEFT);
     textSize(15);
-    text('PRESS Q TO QUIT', 100, 40);
-    text('Time alive : '+ score +' seconds', 100, 60)
+    text('PRESS Q TO QUIT', 30, 40);
+    text('Time alive : '+ score +' seconds', 30, 60)
+    pop();
 }
 
 
@@ -270,7 +305,6 @@ function setup() {
     if (gameState === "menu") {
         menuMusic.isPlaying
     }
-
 }
 
 
@@ -280,6 +314,10 @@ let hasPlayedGameOverSound = false;
 function draw() {
     background(sky.color);
     if (gameState === "menu") {
+        
+        if (!menuMusic.isPlaying()) {
+            menuMusic.loop()
+        }
         showMenu();
 
 
@@ -341,7 +379,15 @@ function mousePressed (){
     }
     //show instructions button on menu
     else if (gameState === "menu" && mouseX > button1.x2 && mouseX < button1.x2 +button1.width && mouseY > button1.y2 && mouseY < button1.y2 + button1.height) {
-        showInstructions();
+        gameState = "instructions";
+    }
+
+
+    //back button inside instruction
+    else if (gameState === "instructions" && mouseX > button1.x3 && mouseX < button1.x3 +button1.width && mouseY > button1.y3 && mouseY < button1.y3 + button1.height) {
+        
+        gameState = "menu"; 
+        
     }
 }
 

@@ -13,6 +13,8 @@
  */
 
 "use strict";
+let instructionbutton;
+let startbutton;
 let minions;
 let gameoverSound;
 let gameoverScreen;
@@ -39,8 +41,9 @@ function preload() {
     minions = loadImage ('assets/images/evilassminions.jpg');
     titleImage = loadImage ('assets/images/Title.png');
     mountains = loadImage ('assets/images/mountains.png');
+    startbutton = loadImage ('assets/images/startgamebutton.png');
+    instructionbutton = loadImage ('assets/images/instructionsbutton.png');
 }
-
 
 //drawing the cloud
 function drawCloud(x, y) {  
@@ -50,6 +53,18 @@ push();
   ellipse(x, y, 90, 50);
   pop();
 }
+
+const button1 = {
+    x: 245,
+    y: 265,
+    height: 64,
+    width: 155,
+    color: "#f06a2cff", //color for debug
+    x2: 245,
+    y2: 350,
+
+};
+
 
 //styling the menu
 function showMenu () {
@@ -61,6 +76,28 @@ function showMenu () {
     ellipse(470, 10 * sin(frameCount * 0.03) + 90, 40, 20);
     pop();
 
+
+    //button area 1
+    push();
+    fill(button1.color);
+    rect(button1.x ,button1.y , button1.width, button1.height)
+    pop();
+    //button1 image
+    push();
+    imageMode(CORNER);
+    image (startbutton, button1.x ,button1.y  ,button1.width, button1.height)
+    pop();
+
+    //button area 2
+    push();
+    fill(button1.color);
+    rect(button1.x2 ,button1.y2 , button1.width, button1.height)
+    pop();
+    //button2 image
+    push();
+    imageMode(CORNER);
+    image (instructionbutton, button1.x2 ,button1.y2  ,button1.width, button1.height)
+    pop();
 
     imageMode (CENTER);
     image(titleImage, width / 2, 7 * sin(frameCount * 0.01) + 150, 350, 200); //image title
@@ -74,13 +111,6 @@ function showMenu () {
     fill("#ffffff");
     ellipse(170, 10 * sin(frameCount * 0.02) + 185, 90, 40);
     pop();
-
-    fill("#000000");
-    textFont (font1);
-    textAlign(CENTER, CENTER);
-    textSize(15);
-    text("Click to Play", width / 2, height / 2+40);
-    imageMode(CORNER);
     
 }
 
@@ -180,13 +210,20 @@ if (key === 'q' || key === 'Q' || key === 'Escape') {
 /**
  * Creates the canvas and initializes the fly
  */
+
 function setup() {
+    
     createCanvas(640, 480);
+
     // Give the fly its first random position
     resetFly();
 
     for (let s of clouds){
         s.speed = random(7, 10);
+    }
+
+    if (gameState === "menu") {
+        menuMusic.isPlaying
     }
 
 }
@@ -242,9 +279,12 @@ function draw() {
 }
 
 function mousePressed (){
-    if (gameState === "menu" || gameState === "gameover") {
+    if (gameState === "gameover") {
         startGame();
         return;
+    }
+    else if (gameState === "menu" && mouseX > button1.x && mouseX < button1.x +button1.width && mouseY > button1.y && mouseY < button1.y + button1.height) {
+        startGame();
     }
   
 }

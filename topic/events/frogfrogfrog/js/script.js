@@ -12,9 +12,20 @@
  */
 
 "use strict";
+//back button states
+let backbuttonCurrent;
+let backbuttonHover;
+let backbuttonDefault;
+//instruction button states
+let instructionsDefault;
+let instructionsCurrent;
+let instructionsHover;
+//Start game button states
+let startbuttonCurrent;
+let startbuttonHover;
+let startbuttonDefault;
+
 let instructionMusic;
-let backbutton;
-let instructionbutton;
 let startbutton;
 let minions;
 let gameoverSound;
@@ -30,11 +41,21 @@ let mountains;
 let clouds = [
   { x: 100, y: 80, speed: undefined }, //cloud 1
   { x: 300, y: 120, speed: undefined }, // cloud 2
-   { x: 500, y: 60, speed: undefined } //cloud 3
+  { x: 500, y: 60, speed: undefined } //cloud 3
 ];
 
 //preloads the font and music
 function preload() {
+    //back buttons
+    backbuttonHover = loadImage ('assets/images/backhover.png')
+    backbuttonDefault = loadImage ('assets/images/backbutton.png');
+    //instructions buttons
+    instructionsHover = loadImage ('assets/images/instructionshover.png');
+    instructionsDefault = loadImage ('assets/images/instructionsbutton.png');
+    //start game buttons
+    startbuttonDefault = loadImage ('assets/images/startgamebutton.png');
+    startbuttonHover = loadImage ('assets/images/startgamehover.png');
+    
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
     font2 = loadFont ('assets/fonts/DarumadropOne-Regular.ttf');
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
@@ -44,9 +65,6 @@ function preload() {
     minions = loadImage ('assets/images/evilassminions.jpg');
     titleImage = loadImage ('assets/images/Title.png');
     mountains = loadImage ('assets/images/mountains.png');
-    startbutton = loadImage ('assets/images/startgamebutton.png');
-    instructionbutton = loadImage ('assets/images/instructionsbutton.png');
-    backbutton = loadImage ('assets/images/backbutton.png');
     instructionMusic = loadSound ('assets/sounds/instructions.mp3')
 }
 
@@ -80,7 +98,7 @@ const button1 = {
 
 //styling the menu
 function showMenu () {
-
+    mouseHover();
     //stops instruction music
     if (instructionMusic.isPlaying()) {
         instructionMusic.stop();
@@ -105,7 +123,7 @@ function showMenu () {
     //button1 image
     push();
     imageMode(CORNER);
-    image (startbutton, button1.x ,button1.y  ,button1.width, button1.height)
+    image (startbuttonCurrent, button1.x ,button1.y  ,button1.width, button1.height)
     pop();
 
     //button area 2
@@ -117,7 +135,7 @@ function showMenu () {
     //button2 image
     push();
     imageMode(CORNER);
-    image (instructionbutton, button1.x2 ,button1.y2  ,button1.width, button1.height)
+    image (instructionsCurrent, button1.x2 ,button1.y2  ,button1.width, button1.height)
     pop();
 
     imageMode (CENTER);
@@ -138,7 +156,7 @@ function showMenu () {
 // instructions/lore I guess
 
 function showInstructions(){
-    
+    mouseHover();
     background(sky.color);
     //floating cloud
     textAlign(LEFT);
@@ -177,7 +195,7 @@ function showInstructions(){
     rect(430, 385, button1.width, button1.height)
     pop();
     //button image
-    image (backbutton, button1.x3, button1.y3, button1.width, button1.height)
+    image (backbuttonCurrent, button1.x3, button1.y3, button1.width, button1.height)
 
 
     //stops game music and start instruction music
@@ -302,6 +320,11 @@ function setup() {
     
     createCanvas(640, 480);
 
+    backbuttonCurrent = backbuttonDefault;
+    instructionsCurrent = instructionsDefault;
+    startbuttonCurrent = startbuttonDefault;
+
+
     // Give the fly its first random position
     resetFly();
 
@@ -374,6 +397,34 @@ function draw() {
     checkBodyFlyOverlap();
     gameTip();
 }
+
+//hover function
+function mouseHover(){
+    //hover for back button in instructions
+    if (gameState === "instructions" && mouseX > button1.x3 && mouseX < button1.x3 +button1.width && mouseY > button1.y3 && mouseY < button1.y3 + button1.height) {
+        backbuttonCurrent = backbuttonHover;
+        
+    }
+   else {
+    backbuttonCurrent = backbuttonDefault;
+   }
+   //hover for instructions button in menu
+   if (gameState === "menu" && mouseX > button1.x2 && mouseX < button1.x2 +button1.width && mouseY > button1.y2 && mouseY < button1.y2 + button1.height){
+    instructionsCurrent = instructionsHover;
+   }
+   else {
+    instructionsCurrent = instructionsDefault
+   }
+    //hover for start game button in menu
+    if (gameState === "menu" && mouseX > button1.x && mouseX < button1.x +button1.width && mouseY > button1.y && mouseY < button1.y + button1.height){
+        startbuttonCurrent = startbuttonHover;
+       }
+         else {
+           startbuttonCurrent = startbuttonDefault;
+       }
+
+}
+
 
 function mousePressed (){
     if (gameState === "gameover") {

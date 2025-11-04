@@ -7,9 +7,17 @@
  * - Move the frog with your mouse
  * - Don't let the evil ass flying frogs touch you or you die, I think
  * 
+ * 
+ * Music made my Dummy cat(game music & menu music), and Mellorine(instructions menu music) on Soundcloud!!
+ * 
+ * 
  * Made with p5
  * https://p5js.org/
  */
+
+
+//for the sake of making things easier for myself i will keep the same name functions
+
 
 "use strict";
 //back button states
@@ -25,6 +33,15 @@ let startbuttonCurrent;
 let startbuttonHover;
 let startbuttonDefault;
 
+//menu select sounds
+let selectSoundSelect;
+let selectSoundBack;
+let selectSoundStart;
+//custom cursor
+
+let customCursor;
+
+let froggy;
 let instructionMusic;
 let startbutton;
 let minions;
@@ -55,7 +72,13 @@ function preload() {
     //start game buttons
     startbuttonDefault = loadImage ('assets/images/startgamebutton.png');
     startbuttonHover = loadImage ('assets/images/startgamehover.png');
-    
+    //loading menu selection sounds
+    selectSoundSelect = loadSound ('assets/sounds/select1.wav');
+    selectSoundBack = loadSound ('assets/sounds/select2.wav')
+    selectSoundStart = loadSound ('assets/sounds/select3.wav')
+
+    customCursor = loadImage ('assets/images/hand_point.png');
+    froggy = loadImage ('assets/images/froggy.png');
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
     font2 = loadFont ('assets/fonts/DarumadropOne-Regular.ttf');
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
@@ -80,6 +103,11 @@ push();
 
 const sky = {
     color: "#4dd1ff",
+}
+
+//selection audios are too damn loud
+const volume ={
+    select: 0.5, 
 }
 
 
@@ -153,6 +181,7 @@ function showMenu () {
     
 }
 
+
 // instructions/lore I guess
 
 function showInstructions(){
@@ -180,12 +209,14 @@ function showInstructions(){
     textSize(43);
     fill("#fdffee")
     text('Instructions', 40, 65,);
-    textSize(28);
+    textSize(25);
     textWrap(WORD);
     text('Froginton the evil frog king sent out his minions to capture you! Unfortunately your capture is inevitable...lol\n \n' +
-  'Avoid the minions as long as you can!\n \n'  +
-  'Good luck soldier!',
+  'Avoid the minions as long as you can by moving around with your mouse!\n \n'  +
+  'Good luck frog',
   40, 140, 390);
+  textFont('sans-serif');
+  text('🐸!', 210, 400, 390)
     //back button
 
     //debug
@@ -220,12 +251,20 @@ function showGameOver(){
     textFont(font1);
     textSize(32);
     fill("#ff0000ff");
+    //mock the player if they score lower than 10
+    if (score < 7) {
+      text("GAME OVER YOU SUCK HAHAHAHAHAHAH \n" +"Score : "+ score, width/2, height/2 - 20);  
+      textSize(20);
+      text ("Click to restart \n Press Q to return to menu",width/2, height/2 + 60)
+    }
+
+    else{
     text("GAME OVER", width/2, height/2 - 20);
     text("Score : "+ score, width/2, height/2 + 15)
     textSize(20);
     text("Click to Restart", width/2, height/2 + 60);    
     text("Press Q to return to main menu", width/2, height/2 + 90); 
-    gameState = "gameover";
+    gameState = "gameover";}
 
     if (gameMusic.isPlaying()){
         gameMusic.stop();
@@ -265,7 +304,7 @@ const frog = {
     body: {
         x: 320,
         y: 520,
-        size: 40
+        size: 60
     },
     // The frog's tongue has a position, size, speed, and state
    
@@ -331,7 +370,7 @@ function setup() {
     for (let s of clouds){
         s.speed = random(7, 10);
     }
-
+//applying custom cursor
     if (gameState === "menu") {
         menuMusic.isPlaying
     }
@@ -343,8 +382,18 @@ let hasPlayedGameOverSound = false;
 //fires up the menu
 function draw() {
     background(sky.color);
+
+    if (gameState === "menu"|| gameState === "instructions") {
+    cursor('assets/images/hand_point.png');
+  } else if (gameState === "game") {
+    noCursor();
+  } else {
+    cursor(); // reset to default for other states
+  }
+
+
+
     if (gameState === "menu") {
-        
         if (!menuMusic.isPlaying()) {
             menuMusic.loop()
         }
@@ -369,8 +418,13 @@ function draw() {
 
         return;
     }
-
- 
+    //hides cursor during gameplay so we can actually see the stupid frog
+    if (gameState === "game"){
+        noCursor();
+    } 
+    else {
+        cursor();
+    }
     // passing clouds
     for (let c of clouds){
 
@@ -438,16 +492,22 @@ function mousePressed (){
     //start game button on menu
     else if (gameState === "menu" && mouseX > button1.x && mouseX < button1.x +button1.width && mouseY > button1.y && mouseY < button1.y + button1.height) {
         startGame();
+        selectSoundStart.setVolume(volume.select);
+        selectSoundStart.play();
     }
-    //show instructions button on menu
+    //instructions button on menu
     else if (gameState === "menu" && mouseX > button1.x2 && mouseX < button1.x2 +button1.width && mouseY > button1.y2 && mouseY < button1.y2 + button1.height) {
         gameState = "instructions";
+
+        selectSoundSelect.setVolume(volume.select);
+        selectSoundSelect.play();
     }
 
 
     //back button inside instruction
     else if (gameState === "instructions" && mouseX > button1.x3 && mouseX < button1.x3 +button1.width && mouseY > button1.y3 && mouseY < button1.y3 + button1.height) {
-        
+        selectSoundBack.setVolume(volume.select);
+        selectSoundBack.play();
         gameState = "menu"; 
         
     }
@@ -517,24 +577,7 @@ function moveFrog() {
  */
 function drawFrog() {
     // Draw the frog's body
-    push();
-    fill("#00ff00");
-    strokeWeight(7);
-    ellipse(frog.body.x, frog.body.y, frog.body.size);
-    pop();
-   //drawing the eyes
-    push();
-    noStroke();
-    fill("#ffffff");
-    ellipse(frog.body.x - 10, frog.body.y - 15, 25);
-    //second eye
-    ellipse(frog.body.x + 10, frog.body.y - 15, 25);
-    //pupils
-    fill("#000000");
-    ellipse(frog.body.x + 10, frog.body.y - 20, 10);
-    ellipse(frog.body.x - 10, frog.body.y - 20, 10);
-    pop();
-
+   image(froggy, frog.body.x-20, frog.body.y-30, frog.body.size, frog.body.size)
 }
 
 //Score increaser
@@ -574,6 +617,3 @@ function checkBodyFlyOverlap() {
     }
 }
 
-/**
- * Launch the tongue on click (if it's not launched yet)
- */

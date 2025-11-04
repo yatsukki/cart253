@@ -388,7 +388,7 @@ function draw() {
   } else if (gameState === "game") {
     noCursor();
   } else {
-    cursor(); // reset to default for other states
+    cursor();
   }
 
 

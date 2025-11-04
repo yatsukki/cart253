@@ -580,10 +580,7 @@ function moveFrog() {
 /**
  * Displays the tongue (tip and line connection) and the frog (body)
  */
-function drawFrog() {
-    // Draw the frog's body
-   image(froggy, frog.body.x-20, frog.body.y-30, frog.body.size, frog.body.size)
-}
+
 
 //Score increaser
 function scoreIncrease() {

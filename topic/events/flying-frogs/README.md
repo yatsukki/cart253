@@ -2,7 +2,7 @@
 
 A game about avoiding flying ennemies as long as possible.
 
-[Play it!](https://pippinbarr.github.io/cart253-examples/topics/making/frogfrogfrog/index.html)
+[Play it!](https://yatsukki.github.io/cart253/topic/events/flying-frogs)
 
 - [Ideas](./ideas.md)
 - [Planning](./planning.md)

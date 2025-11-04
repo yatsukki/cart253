@@ -1,6 +1,6 @@
-# Frogfrogfrog
+# Flying frogs
 
-A game about catching flies.
+A game about avoiding flying ennemies as long as possible.
 
 [Play it!](https://pippinbarr.github.io/cart253-examples/topics/making/frogfrogfrog/index.html)
 

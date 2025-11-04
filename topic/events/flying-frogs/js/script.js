@@ -273,6 +273,9 @@ function showGameOver(){
     
 }
 
+
+
+
 //starts the game
 function startGame () {
     fill("#000000");
@@ -358,6 +361,8 @@ if (gameoverSound.isPlaying()) {
 function setup() {
     
     createCanvas(640, 480);
+
+    
 
     backbuttonCurrent = backbuttonDefault;
     instructionsCurrent = instructionsDefault;
@@ -616,4 +621,13 @@ function checkBodyFlyOverlap() {
         gameState = "gameover";
     }
 }
+
+//event listener so people don't cheat
+window.addEventListener("blur", function() {
+    if (gameState === "game") {
+        gameMusic.stop();
+        gameState = "gameover";
+        hasPlayedGameOverSound = false;
+    }
+});
 

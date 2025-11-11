@@ -77,6 +77,7 @@ function preload() {
     selectSoundBack = loadSound ('assets/sounds/select2.wav')
     selectSoundStart = loadSound ('assets/sounds/select3.wav')
 
+
     customCursor = loadImage ('assets/images/hand_point.png');
     froggy = loadImage ('assets/images/froggy.png');
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
@@ -85,7 +86,8 @@ function preload() {
     gameMusic = loadSound ('assets/sounds/dummycat2.mp3');
     gameoverSound = loadSound ('assets/sounds/gameover.mp3');
     gameoverScreen = loadImage ('assets/images/gameover.png');
-    minions = loadImage ('assets/images/evilassminions.jpg');
+    fastEnemy.image = loadImage ('assets/images/evilassminions.jpg');
+    slowEnemy.image = loadImage ('assets/images/67frog.gif');
     titleImage = loadImage ('assets/images/Title.png');
     mountains = loadImage ('assets/images/mountains.png');
     instructionMusic = loadSound ('assets/sounds/instructions.mp3')
@@ -110,6 +112,30 @@ const volume ={
     select: 0.5, 
 }
 
+//Making enemies
+const slowEnemy= {
+    width: 200,
+    height: 140,
+    x:0,
+    y:0,
+    speed: 15,
+    image: undefined,
+};
+
+const fastEnemy= {
+    width: 70,
+    height: 70,
+    x:0,
+    y:0,
+    speed: 17,
+    image: undefined,
+};
+
+
+let enemies = [
+    slowEnemy,
+    fastEnemy
+];
 
 const button1 = {
     x: 245,
@@ -318,20 +344,9 @@ const frog = {
 
 // Our fly
 // Has a position, size, and speed of horizontal movement
-const fly = {
-    x: 0,
-    y: 200, // Will be random
-    size: 10,
-    speed: 17,
-    
-};
+let fly;
 
-const fly2 = {
-    x: 0,
-    y: 0, // Will be random
-    size: 10,
-    speed: 15
-};
+
 
 //Game goes back to menu
 function keyPressed() {
@@ -361,6 +376,7 @@ if (gameoverSound.isPlaying()) {
 function setup() {
     
     createCanvas(640, 480);
+    fly = random(enemies);
 
     
 
@@ -531,14 +547,26 @@ function mousePressed (){
  * Draws the fly 
 */
 function drawFly() {
-    image (minions, fly.x, fly.y, 70, 70);
+    if (fly === slowEnemy) {
+        image(fly.image, fly.x, fly.y, fly.width, fly.height); // slow enemy custom size
+    } else if (fly === fastEnemy) {
+        image(fly.image, fly.x, fly.y, fly.width, fly.height); // fast enemy custom size
+    }
 }
+   
+
 
 /**
  * Resets the fly to the left with a random y
 */
 function resetFly() {
-    fly.x = -80;
+    fly = random(enemies);
+    if (fly === fastEnemy) {
+        fly.x = -80;
+    }
+    else if (fly === slowEnemy) {
+        fly.x = -180;
+    }
     fly.baseY = random(100, height - 100); // store base position
 }
 
@@ -552,11 +580,14 @@ function resetFly() {
 function moveFly() {
 
     let amplitude = 100;
+    if (fly === slowEnemy) {amplitude = 250}
+        else if (fly === fastEnemy){amplitude =100}
     let speed= 0.05; 
     let verticalOffset = sin(frameCount * speed) * amplitude;
     // Move the fly
     fly.x += fly.speed;
      fly.y = fly.baseY + verticalOffset;
+
     // Handle the fly going off the canvas
     if (fly.x > width) {
         resetFly();
@@ -608,14 +639,14 @@ function scoreReset() {
  */
 function checkBodyFlyOverlap() {
     // Calculate the center of the fly
-    const flyCenterX = fly.x + 70 / 2; // half of the drawn width
-    const flyCenterY = fly.y + 70 / 2; // half of the drawn height
+    const flyCenterX = fly.x + fly.width / 2; // half of the drawn width
+    const flyCenterY = fly.y + fly.height / 2; // half of the drawn height
 
     // Get distance from frog body to fly center
     const d = dist(frog.body.x, frog.body.y, flyCenterX, flyCenterY);
 
     // Check if circles overlap (frog’s circle vs fly’s approximate circle)
-    const eaten = (d < frog.body.size / 2 + 70 / 2);
+    const eaten = (d < frog.body.size / 2 + (fly.width-70) / 2); 
 
     if (eaten) {
         gameState = "gameover";

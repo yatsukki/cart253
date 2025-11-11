@@ -118,7 +118,7 @@ const slowEnemy= {
     height: 140,
     x:0,
     y:0,
-    speed: 15,
+    speed: 12,
     image: undefined,
 };
 

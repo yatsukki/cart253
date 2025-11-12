@@ -2,7 +2,7 @@
 
 Kerven Laurent
 
-[View this project online](https://yatsukki.github.io/cart253/topic/data/data-challenge/js/script.js)
+[View this project online](https://yatsukki.github.io/cart253/topic/data/data-challenge)
 
 ## Description
 

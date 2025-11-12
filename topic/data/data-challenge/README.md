@@ -1,8 +1,8 @@
 # TITLE OF PROJECT
 
-AUTHOR NAME
+Kerven Laurent
 
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online](https://github.com/yatsukki/cart253/blob/main/topic/data/data-challenge/js/script.js)
 
 ## Description
 

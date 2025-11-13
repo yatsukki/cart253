@@ -41,6 +41,12 @@ let selectSoundStart;
 
 let customCursor;
 
+
+//camping tracker
+let playerLastY = 0;
+let timeSpentInSameY = 0;
+let yTolerance = 15; 
+
 let froggy;
 let instructionMusic;
 let startbutton;
@@ -74,10 +80,10 @@ function preload() {
     startbuttonHover = loadImage ('assets/images/startgamehover.png');
     //loading menu selection sounds
     selectSoundSelect = loadSound ('assets/sounds/select1.wav');
-    selectSoundBack = loadSound ('assets/sounds/select2.wav')
-    selectSoundStart = loadSound ('assets/sounds/select3.wav')
+    selectSoundBack = loadSound ('assets/sounds/select2.wav');
+    selectSoundStart = loadSound ('assets/sounds/select3.wav');
 
-
+    frogCamper.image = loadImage ('assets/images/deeznuts.gif');
     customCursor = loadImage ('assets/images/hand_point.png');
     froggy = loadImage ('assets/images/frog.gif');
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
@@ -113,6 +119,18 @@ const volume ={
 }
 
 //Making enemies
+const frogCamper = {
+    image: undefined,
+    width: 70,
+    height: 60,
+    x:0,
+    y:0,
+    speed: 4,
+
+}
+
+
+
 const slowEnemy= {
     width: 200,
     height: 140,
@@ -131,7 +149,7 @@ const fastEnemy= {
     image: undefined,
 };
 
-
+//array of enemies
 let enemies = [
     slowEnemy,
     fastEnemy
@@ -239,10 +257,10 @@ function showInstructions(){
     textWrap(WORD);
     text('Froginton the evil frog king sent out his minions to capture you! Unfortunately your capture is inevitable...lol\n \n' +
   'Avoid the minions as long as you can by moving around with your mouse!\n \n'  +
-  'Good luck frog',
+  'Good luck froggy',
   40, 140, 390);
   textFont('sans-serif');
-  text('🐸!', 210, 400, 390)
+  text('🐸!', 234, 402, 390)
     //back button
 
     //debug
@@ -311,7 +329,10 @@ function startGame () {
     scoreReset();
     hasPlayedGameOverSound = false;
     gameState = "game";
-
+    frogCamperActive = false;
+    frogCamper.x = -100;
+    frogCamper.y = 0;
+    timeSpentInSameY = 0;
 
 }
 //Displays tip to player to press Q to quit at the top left of the screen
@@ -377,7 +398,8 @@ function setup() {
     
     createCanvas(640, 480);
     fly = random(enemies);
-
+    playerLastY = frog.body.y;
+    timeSpentInSameY = 0;
     
 
     backbuttonCurrent = backbuttonDefault;
@@ -399,6 +421,43 @@ function setup() {
 
 
 let hasPlayedGameOverSound = false;
+
+
+//camping killer
+
+
+function trackPlayerMovement() {
+  if (abs(frog.body.y - playerLastY) < yTolerance) {
+      timeSpentInSameY++;
+  } else {
+      timeSpentInSameY = 0;
+  }
+
+  playerLastY = frog.body.y;
+}
+
+let frogCamperActive = false;
+
+function activateFrogCamper() {
+    frogCamperActive = true;
+    frogCamper.x = -100; 
+    frogCamper.y = frog.body.y; 
+}
+
+function moveFrogCamper() {
+    frogCamper.x += frogCamper.speed;
+
+    // If it goes offscreen, reset
+    if (frogCamper.x > width + 100) {
+        frogCamperActive = false;
+        frogCamper.x = -100;
+        timeSpentInSameY = 0; // reset camping timer
+    }
+}
+
+function drawFrogCamper() {
+    image(frogCamper.image, frogCamper.x, frogCamper.y, frogCamper.width, frogCamper.height);
+}
 
 //fires up the menu
 function draw() {
@@ -439,9 +498,14 @@ function draw() {
 
         return;
     }
+
+    
+
     //hides cursor during gameplay so we can actually see the stupid frog
     if (gameState === "game"){
         noCursor();
+
+        
     } 
     else {
         cursor();
@@ -464,11 +528,23 @@ function draw() {
     }
     
 
-    
+    trackPlayerMovement();
+
+    if (timeSpentInSameY > 100 && !frogCamperActive) { //seconds before camper killer activates
+    activateFrogCamper();
+}
     moveFly();
+
+    if (frogCamperActive) {
+    moveFrogCamper();
+    drawFrogCamper();
+}
+
+
     drawFly();
     moveFrog();
     drawFrog();
+    checkFrogCamperOverlap();
     checkBodyFlyOverlap();
     gameTip();
 }
@@ -567,7 +643,13 @@ function resetFly() {
     else if (fly === slowEnemy) {
         fly.x = -180;
     }
+    
     fly.baseY = random(100, height - 100); // store base position
+}
+
+function resetFrogcamper() {
+    frogCamper.x = -80;
+    frogCamperActive = false;
 }
 
 
@@ -585,13 +667,22 @@ function moveFly() {
     let speed= 0.05; 
     let verticalOffset = sin(frameCount * speed) * amplitude;
     // Move the fly
+    frogCamper.x += frogCamper.speed;
     fly.x += fly.speed;
      fly.y = fly.baseY + verticalOffset;
 
     // Handle the fly going off the canvas
-    if (fly.x > width) {
-        resetFly();
-    }
+    if (fly.x > width + 100) { // +100 adds a small buffer
+    resetFly();
+}
+
+
+if (frogCamperActive) {
+    moveFrogCamper();
+}
+if (frogCamper.x > width) {
+    resetFrogcamper();
+}
    
 }
 
@@ -637,6 +728,18 @@ function scoreReset() {
 /**
  * Handles the body overlapping the fly
  */
+
+function checkFrogCamperOverlap() {
+    const camperCenterX = frogCamper.x + frogCamper.width / 2;
+    const camperCenterY = frogCamper.y + frogCamper.height / 2;
+    const d = dist(frog.body.x, frog.body.y, camperCenterX, camperCenterY);
+
+    if (d < frog.body.size / 2 + frogCamper.width / 2 && frogCamperActive) {
+        gameState = "gameover";
+    }
+}
+
+
 function checkBodyFlyOverlap() {
     // Calculate the center of the fly
     const flyCenterX = fly.x + fly.width / 2; // half of the drawn width

@@ -67,6 +67,7 @@ let clouds = [
   { x: 500, y: 60, speed: undefined } //cloud 3
 ];
 
+
 //preloads the font and music
 function preload() {
     //back buttons

@@ -277,7 +277,7 @@ function showGameOver(){
     textFont(font1);
     textSize(32);
     fill("#ff0000ff");
-    //mock the player if they score lower than 10
+    //mock the player if they score lower than 7
     if (score < 7) {
       text("GAME OVER YOU SUCK HAHAHAHAHAHAH \n" +"Score : "+ score, width/2, height/2 - 20);  
       textSize(20);

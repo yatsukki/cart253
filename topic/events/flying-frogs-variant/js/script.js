@@ -45,7 +45,7 @@ let customCursor;
 //camping tracker
 let playerLastY = 0;
 let timeSpentInSameY = 0;
-let yTolerance = 15; 
+let yTolerance = 10; 
 
 let froggy;
 let instructionMusic;
@@ -145,7 +145,7 @@ const fastEnemy= {
     height: 70,
     x:0,
     y:0,
-    speed: 17,
+    speed: 14,
     image: undefined,
 };
 

@@ -136,7 +136,7 @@ const slowEnemy= {
     height: 140,
     x:0,
     y:0,
-    speed: 12,
+    speed: 9,
     image: undefined,
 };
 
@@ -295,8 +295,8 @@ function showGameOver(){
     textFont(font1);
     textSize(32);
     fill("#ff0000ff");
-    //mock the player if they score lower than 7
-    if (score < 7) {
+    //mock the player if they score lower than 4
+    if (score < 4) {
       text("GAME OVER YOU SUCK HAHAHAHAHAHAH \n" +"Score : "+ score, width/2, height/2 - 20);  
       textSize(20);
       text ("Click to restart \n Press Q to return to menu",width/2, height/2 + 60)

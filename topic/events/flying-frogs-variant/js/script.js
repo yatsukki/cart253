@@ -79,7 +79,7 @@ function preload() {
 
 
     customCursor = loadImage ('assets/images/hand_point.png');
-    froggy = loadImage ('assets/images/froggy.png');
+    froggy = loadImage ('assets/images/frog.gif');
     font1 = loadFont('assets/fonts/CookieRunBlack.otf');
     font2 = loadFont ('assets/fonts/DarumadropOne-Regular.ttf');
     menuMusic = loadSound ('assets/sounds/dummycat.mp3');   
@@ -193,7 +193,7 @@ function showMenu () {
     pop();
 
     imageMode (CENTER);
-    image(titleImage, width / 2, 7 * sin(frameCount * 0.01) + 150, 350, 200); //image title
+    image(titleImage, width / 2, 7 * sin(frameCount * 0.01) + 150, 358, 225); //image title
     imageMode (CORNERS);
     image(mountains, 0, height / 1.7, width, height);
     //Resets image mode

@@ -1,8 +1,13 @@
 The mod jam was a pretty demanding assignment, but going around looking at my colleagues’ work opened my eyes to how I could’ve gone about this homework.
+
 First, I wanted to talk about Lanna’s mod jam. When I opened the instructions, I was honestly amazed that she went out her way to turn a simple page that, I thought, was just supposed to contain text! She made a full-fledged tutorial on how to play her game, and it was honestly refreshing to see someone giving this much attention to user experience.
 The other mod jam I wanted to talk about is Kai’s. I really want to bring attention to his way of styling menus. He made it so the menu items would behave like flies and fly around randomly, but you’d have to chase down the wanted option with your mouse to either access the instructions or start the game, and I thought it was so clever because of how on theme this was, even though it might not be to obvious at first glance.
+
 Despite everything, Jordan’s mod jam might have to be my favorite despite its simplicity. It wasn’t necessarily about the mechanics of his game but rather the aesthetic. To put it simply, I found it comical. The different sound effects used when the player eats a fly always make me laugh a little, they’re so dramatic for no reason. Same goes for the theme of the game as well, it’s set in hell and you’re supposed to earn your way out of hell by, ironically, killing souls.
 Another one I’d like to mention was Huynh’s mod jam. In his mod jam even though it was a simple one where it didn’t differ too much from the original frogfrogfrog game, the addition of the fly sound effect building up overtime on top of being timed gives the player a sense of urgency that you don’t see in most other projects. I thought that, though simple, even if it looked unintentional, that was super creative.
+
 I also wanted to mention that Arielle’s mod jam actually inspired me to go a little bit beyond what I was expected to do for this mod jam after seeing hers before the deadline. Seeing that she implemented an additional mechanic where the player must get the right answer on a math equation to not get penalized, I immediately thought that I wasn’t doing enough for this project and assumed that everyone’s mod jam was on her level (I didn’t care enough to fact check that).
+
 I absolutely hate Alexandre’s game, not in a bad way. He has, arguably, the hardest mod jam in our entire group.
+
 All in all I wanted to conclude by saying that I really liked Arielle, Ayden, Emmett, Lanna and Yvonne’s mod jams for making an effort to the aesthetic of their games, I hope to see more of my classmates giving this type of attention to their work. 

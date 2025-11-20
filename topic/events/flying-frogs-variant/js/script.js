@@ -126,7 +126,7 @@ const frogCamper = {
     height: 60,
     x:0,
     y:0,
-    speed: 4,
+    speed: 5,
 
 }
 
@@ -137,7 +137,7 @@ const slowEnemy= {
     height: 140,
     x:0,
     y:0,
-    speed: 9,
+    speed: 12,
     image: undefined,
 };
 

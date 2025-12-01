@@ -161,7 +161,7 @@ const button1 = {
     y: 265,
     height: 64,
     width: 155,
-    color: "rgba(255,255,255,0)", //color for debug
+    color: "rgba(255, 27, 27, 0)", //color for debug
     x2: 245,
     y2: 350,
     x3:430, 

@@ -19,18 +19,17 @@ function setup() {
  * Draw circles from the top to the bottom of the canvas
  */
 function draw() {
-    background(0);
+    let black = 0
+    background(black);
+   
+    let x =200;
+    let y= 0;
+    let diameter = 12;
 
-    // Draw a series of 50-pixel diameter circles
-    // Starting at the top of the canvas
-    // And ending at the bottom
-    ellipse(200, 0, 50);
-    ellipse(200, 50, 50);
-    ellipse(200, 100, 50);
-    ellipse(200, 150, 50);
-    ellipse(200, 200, 50);
-    ellipse(200, 250, 50);
-    ellipse(200, 300, 50);
-    ellipse(200, 350, 50);
-    ellipse(200, 400, 50);
+    frameRate(1);
+    while (y <= height){
+        ellipse(x,y,diameter);
+        y += diameter;
+    }
+    
 }
